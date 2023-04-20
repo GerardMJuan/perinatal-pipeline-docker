@@ -71,9 +71,6 @@ RUN chmod +x -R /usr/src/structural-pipeline/setup_perinatal.sh \
     && chmod +x -R /usr/src/structural-pipeline/perinatal/perinatal_scripts/scripts/ \
     && chmod +x -R /etc/fsl/fsl.sh
 
-# SETUP FSLDIR
-RUN /etc/fsl/fsl.sh
-
 # Run the setup_perinatal.sh script
 RUN cd /usr/src/structural-pipeline && sh setup_perinatal.sh
 

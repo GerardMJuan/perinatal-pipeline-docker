@@ -1,9 +1,20 @@
 #!/bin/bash
 
+# if FSLDIR is not defined, assume we need to read the FSL startup
+if [ -z ${FSLDIR+x} ]; then
+  if [ -f /etc/fsl/fsl.sh ]; then
+    . /etc/fsl/fsl.sh
+  else
+    echo FSLDIR is not set and there is no system-wide FSL startup
+    exit 1
+  fi
+
+fi
+
 usage()
 {
   base=$(basename "$0")
-  echo "usage: $base <subject_dir> <session_ID> <scan_age> -T2 <subject_T2.nii.gz> [-T1 <subject_T1.nii.gz>] [options]
+  echo "usage: $base <subject_dir> <type> <gaFile> <fetNeo> <atname> [options]
 This script runs the perinatal structural pipeline.
 
 Arguments:
