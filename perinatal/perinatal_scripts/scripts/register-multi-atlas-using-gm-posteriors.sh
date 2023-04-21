@@ -36,7 +36,7 @@ mkdir -p dofs
 atlas=${atname}
 if [ ! -f $DRAWEMDIR/atlases/${atname}s/vent-posteriors-v3/$atlas.nii.gz ];then  
 mkdir -p $DRAWEMDIR/atlases/${atname}s/vent-posteriors-v3
-python3 $scriptdir/generateGM.py -i $DRAWEMDIR/atlases/${atname}s/tissues-v3/$atlas.nii.gz -o $DRAWEMDIR/atlases/${atname}s/vent-posteriors-v3/$atlas.nii.gz -t 5
+.6 $scriptdir/generateGM.py -i $DRAWEMDIR/atlases/${atname}s/tissues-v3/$atlas.nii.gz -o $DRAWEMDIR/atlases/${atname}s/vent-posteriors-v3/$atlas.nii.gz -t 5
 fi
 prefix=dofs/$subj-$atlas-n_
 fix_img1=N4/$subj.nii.gz
@@ -49,7 +49,7 @@ fix_mask=$sdir/../segmentations/${subj}_brain_mask.nii.gz
 mov_mask=$DRAWEMDIR/atlases/${atname}s/mask/$atlas.nii.gz
 if [ ! -f $DRAWEMDIR/atlases/${atname}s/mask/$atlas.nii.gz ];then
   mkdir -p $DRAWEMDIR/atlases/${atname}s/mask
-  python3 $scriptdir/threshold_mask.py -i $DRAWEMDIR/atlases/${atname}s/T2/$atlas.nii.gz -o $mov_mask
+  python3.6 $scriptdir/threshold_mask.py -i $DRAWEMDIR/atlases/${atname}s/T2/$atlas.nii.gz -o $mov_mask
 fi
 if [ ! -f ${prefix}1Warp.nii.gz ];then
   sigma="4x2x1x0"

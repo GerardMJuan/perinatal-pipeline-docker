@@ -61,7 +61,7 @@ if [ ! -f N4/$subj.nii.gz ];then
 	  #brain extract
 	  run bet N4/${subj}_rescaled.nii.gz segmentations/${subj}_brain.nii.gz -R -f 0.2 -m
 
-	  python3 $code_dir/threshold_mask.py -i segmentations/${subj}_brain.nii.gz -o $datadir/segmentations/${subj}_brain_mask.nii.gz 
+	  python3.6 $code_dir/threshold_mask.py -i segmentations/${subj}_brain.nii.gz -o $datadir/segmentations/${subj}_brain_mask.nii.gz 
 
 	  echo "Registering brain to template..."
 
@@ -84,7 +84,7 @@ if [ ! -f N4/$subj.nii.gz ];then
 
 	  ${ANTSPATH}/antsApplyTransforms -d 3 -i segmentations/${subj}_brain.nii.gz -r $template_T2/template-$age.nii.gz -o $datadir/$type/$subj.nii.gz -n Linear -t ${prefix}0GenericAffine.mat --verbose 1 -f 0
 
-	  python3 $code_dir/threshold_mask.py -i $type/$subj.nii.gz -o $datadir/segmentations/${subj}_brain_mask.nii.gz
+	  python3.6 $code_dir/threshold_mask.py -i $type/$subj.nii.gz -o $datadir/segmentations/${subj}_brain_mask.nii.gz
 	  
 	fi
 
