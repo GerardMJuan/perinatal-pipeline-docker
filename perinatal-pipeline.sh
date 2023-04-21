@@ -18,7 +18,7 @@ usage()
 This script runs the perinatal structural pipeline.
 
 Arguments:
-  subject_dir 			Subject directory.
+  subject_dir 		Subject directory or subject file.
   type 				T2 or T1 (there has to be a subfolder in the subject directory with the type name)
   gaFile			File containing age information
   fetneo			Binary variable representing fetal (0) or neonatal (1) data
