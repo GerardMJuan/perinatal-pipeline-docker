@@ -196,14 +196,14 @@ do
 	runpipeline segmentation $scriptdir/segmentation/pipeline.sh $T $type1 $subj $roundedAge $fetneo $atname -d $workdir -t $threads
 
 	# surface extraction
-	# runpipeline surface $scriptdir/surface/pipeline.sh $subj -d $workdir -t $threads
+	runpipeline surface $scriptdir/surface/pipeline.sh $subj -d $workdir -t $threads
 
 	# clean-up
 	if [ $cleanup -eq 1 ];then
 	  runpipeline cleanup rm -r $workdir
 	fi
 
-	echo "dHCP pipeline completed!"
+	echo "Perinatal pipeline completed!"
 done
 
 
