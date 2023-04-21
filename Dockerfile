@@ -1,9 +1,6 @@
 # Use the original dHCP pipeline image as the base image
 FROM biomedia/dhcp-structural-pipeline:latest as dhcp_base
 
-# # Build ANTs in a separate stage
-# FROM ubuntu:bionic-20220427 as ants_builder
-
 RUN apt-get update && \
     apt-get install -y build-essential checkinstall \
     libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev \
@@ -16,9 +13,6 @@ RUN apt-get update && \
     cd .. && \
     rm -rf Python-3.6.15* && \
     curl https://bootstrap.pypa.io/pip/3.6/get-pip.py | python3.6 - && \
-    apt-get remove -y checkinstall \
-    libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev \
-    libgdbm-dev libc6-dev libbz2-dev openssl libffi-dev && \
     apt-get autoremove -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
@@ -40,31 +34,52 @@ RUN apt-get update \
     software-properties-common \
     wget \
     unzip \
-    gcc-5
+    gcc \
+    g++
 
-ADD https://github.com/ANTsX/ANTs/releases/download/v2.4.3/ants-2.4.3-ubuntu-22.04-X64-gcc.zip /tmp/ants/source.zip
-RUN unzip /tmp/ants/source.zip -d /tmp/ants \
-    && mv /tmp/ants/ants-2.4.3 /opt/ants
+RUN wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null \
+    | apt-key add - \
+    && apt-add-repository -y 'deb https://apt.kitware.com/ubuntu/ bionic main' \
+    && apt-get update \
+    && apt-get -y install cmake=3.18.3-0kitware1 cmake-data=3.18.3-0kitware1
 
-# remov the source code
-RUN rm -rf /tmp/ants
+RUN git clone --depth 1 https://github.com/ANTsX/ANTs.git /tmp/ants/source
 
-# Set environment variables for ANTs
+RUN mkdir -p /tmp/ants/build \
+    && cd /tmp/ants/build \
+    && mkdir -p /opt/ants \
+    && git config --global url."https://".insteadOf git:// \
+    && cmake \
+    -GNinja \
+    -DBUILD_TESTING=ON \
+    -DRUN_LONG_TESTS=OFF \
+    -DRUN_SHORT_TESTS=ON \
+    -DBUILD_SHARED_LIBS=ON \
+    -DCMAKE_INSTALL_PREFIX=/opt/ants \
+    /tmp/ants/source \
+    && cmake --build . --parallel \
+    && cd ANTS-build \
+    && cmake --install .
+
 ENV ANTSPATH="/opt/ants/bin/" \
     PATH="/opt/ants/bin:$PATH" \
     LD_LIBRARY_PATH="/opt/ants/lib:$LD_LIBRARY_PATH"
 
+RUN apt-get update \
+    && apt install -y --no-install-recommends \
+    bc \
+    zlib1g-dev \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
 # Clone the perinatal pipeline extension repository
-RUN git clone https://github.com/GerardMJuan/perinatal-pipeline-docker.git /tmp/perinatal-pipeline
+RUN git clone --depth 2 https://github.com/GerardMJuan/perinatal-pipeline-docker.git /tmp/perinatal-pipeline
 
 # Copy the contents of the cloned repository to the existing structural-pipeline directory
-RUN cp -R /tmp/perinatal-pipeline/* /usr/src/structural-pipeline/
-
-# Remove the cloned repository
-RUN rm -rf /tmp/perinatal-pipeline
-
 # Grant executable permissions to all the scripts in the various directories
-RUN chmod +x -R /usr/src/structural-pipeline/setup_perinatal.sh \
+RUN cp -R /tmp/perinatal-pipeline/* /usr/src/structural-pipeline/ \
+    && rm -rf /tmp/perinatal-pipeline \
+    && chmod +x -R /usr/src/structural-pipeline/setup_perinatal.sh \
     && chmod +x -R /usr/src/structural-pipeline/perinatal-pipeline.sh \
     && chmod +x -R /usr/src/structural-pipeline/perinatal/perinatal_scripts/pipelines/ \
     && chmod +x -R /usr/src/structural-pipeline/perinatal/perinatal_scripts/basic_scripts/ \
