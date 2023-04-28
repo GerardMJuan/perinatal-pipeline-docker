@@ -24,6 +24,12 @@ The demorgraphics file should be structured with a first column for the ID, a se
 
 The raw files should be named fet{ID} or neo{ID}. based on their developmental stage, and put in a directory named after their image type (T2/T1), eg., <path/to/raw/images>/T2/fet037.nii.gz.
 
+The pipeline generates its own brain mask using bet, but it can be a source of issues, as bet do not work very well with fetal images. If you want to provide your own mask, just put it into:
+
+$output/segmentations/${subj}\_brain_mask.nii.gz
+
+And the pipeline will use that one instead.
+
 ## Installing the perinatal pipeline on a Docker container
 
 To install the perinatal pipeline on a Docker container, you will need to install [Docker](https://docs.docker.com/install/).

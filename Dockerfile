@@ -73,12 +73,12 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Clone the perinatal pipeline extension repository
-RUN git clone --depth 1 https://github.com/GerardMJuan/perinatal-pipeline-docker.git /tmp/perinatal-pipeline-aux2
+RUN git clone --depth 1 https://github.com/GerardMJuan/perinatal-pipeline-docker.git /tmp/perinatal-pipeline-aux3
 
 # Copy the contents of the cloned repository to the existing structural-pipeline directory
 # Grant executable permissions to all the scripts in the various directories
-RUN cp -R /tmp/perinatal-pipeline-aux2/* /usr/src/structural-pipeline/ \
-    && rm -rf /tmp/perinatal-pipeline-aux2 \
+RUN cp -R /tmp/perinatal-pipeline-aux3/* /usr/src/structural-pipeline/ \
+    && rm -rf /tmp/perinatal-pipeline-aux3 \
     && chmod +x -R /usr/src/structural-pipeline/setup_perinatal.sh \
     && chmod +x -R /usr/src/structural-pipeline/perinatal-pipeline.sh \
     && chmod +x -R /usr/src/structural-pipeline/perinatal/perinatal_scripts/pipelines/ \
