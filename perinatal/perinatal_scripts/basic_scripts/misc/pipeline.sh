@@ -92,8 +92,8 @@ if [ ! -f $Tmasked ];then
 fi
 
 
-if [ ! -f dofs/template-$age-$subj-n.dof.gz ];then
-  run mirtk register $Tmasked $template_T2/template-$age.nii.gz -dofout dofs/template-$age-$subj-n.dof.gz -parin $registration_config_template -threads $threads -v 0
+if [ ! -f $subj-template-$age-n.dof.gz ];then
+  run mirtk register $Tmasked $template_T2/template-$age.nii.gz -dofout dofs/$subj-template-$age-n.dof.gz -parin $registration_config_template -threads $threads -v 0
 fi
 
 if [ ! -f dofs/$subj-template-$age-r.dof.gz ];then

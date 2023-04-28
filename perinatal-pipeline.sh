@@ -195,6 +195,9 @@ do
 	# segmentation
 	runpipeline segmentation $scriptdir/segmentation/pipeline.sh $T $type1 $subj $roundedAge $fetneo $atname -d $workdir -t $threads
 
+	# generate some additional files
+	runpipeline additional $scriptdir/misc/pipeline.sh $subj $roundedAge $fetneo $type1 -d $workdir -t $threads
+
 	# surface extraction
 	runpipeline surface $scriptdir/surface/pipeline.sh $subj -d $workdir -t $threads
 

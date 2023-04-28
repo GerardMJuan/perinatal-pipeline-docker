@@ -38,10 +38,10 @@ subj=$1
 
 datadir=`pwd`
 threads=1
-
+fetneo=0
 # check whether the different tools are set and load parameters
 codedir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-. $codedir/../../parameters/configuration.sh
+. $codedir/../../parameters/configuration.sh $fetneo
 
 shift
 while [ $# -gt 0 ]; do

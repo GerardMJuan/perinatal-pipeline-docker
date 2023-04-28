@@ -50,17 +50,17 @@ if [ $fetneo -eq 0 ];
 then
 # Average space atlas name, T2 and warps
 export template_name="fetal"
-export template_T2=$code_dir/atlases/$template_name/T2
-export template_mask=$code_dir/atlases/$template_name/mask
+export template_T2=$code_dir/perinatal/perinatal_atlases/$template_name/T2
+export template_mask=$code_dir/perinatal/perinatal_atlases/$template_name/mask
 export template_min_age=21
 export template_max_age=38
 else
 # Average space atlas name, T2 and warps
 export template_name="neonatal"
-export template_T1=$code_dir/atlases/$template_name/T1
-export template_T2=$code_dir/atlases/$template_name/T2
-export template_mask=$code_dir/atlases/$template_name/mask
-export template_dofs=$code_dir/atlases/$template_name/dofs
+export template_T1=$code_dir/perinatal/perinatal_atlases/$template_name/T1
+export template_T2=$code_dir/perinatal/perinatal_atlases/$template_name/T2
+export template_mask=$code_dir/perinatal/perinatal_atlases/$template_name/mask
+export template_dofs=$code_dir/perinatal/perinatal_atlases/$template_name/dofs
 export template_min_age=28
 export template_max_age=44
 fi
@@ -70,7 +70,7 @@ export registration_config=$parameters_dir/ireg-structural.cfg
 export registration_config_template=$parameters_dir/ireg.cfg
 
 # surface reconstuction parameters
-export surface_recon_config=$parameters_dir/recon-neonatal-cortex.cfg
+export q=$parameters_dir/recon-neonatal-cortex.cfg
 
 # log function
 run()
